@@ -88,5 +88,8 @@ desktop.ini
 # =========================
 *.tmp
 *.swp
+# Ignore Spring Boot application properties
+/backend/notehub/src/main/resources/application.properties
 
-resources/application.properties
+# Keep example configuration
+!/backend/notehub/src/main/resources/application.properties.example
