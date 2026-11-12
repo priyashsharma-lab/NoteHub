@@ -1,0 +1,129 @@
+#navbar-container {
+    background-color: white;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    height: 80px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+}
+
+#hamburger-icon {
+    height: 50px;
+    width: 50px;
+    flex-shrink: 0;
+}
+
+#hamburger-icon-button {
+    margin: 5px;
+    padding: 5px;
+    height: 40px;
+    width: 40px;
+    border: none;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#hamburger-icon-button:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+#NoteHub-logo {
+    width: 120px;
+    height: 40px;
+    background-color: white;
+    flex-shrink: 0;
+}
+
+#NoteHub-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#nav-search-bar {
+    display: flex;
+    align-items: center;
+    height: 45%;
+    gap: 8px;
+    flex: 1;
+    max-width: 40rem;
+    min-width: 120px;
+    padding: 6px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #e8e8efd5;
+    margin: 0 auto;
+}
+
+#nav-search-bar input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+}
+
+#nav-search-bar:focus-within {
+    border-color: white;
+    background-color: white;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25);
+}
+
+#nav-search-button,
+#nav-clear-button {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+}
+
+#nav-search-button:hover,
+#nav-clear-button:hover {
+    background-color: rgb(201, 201, 201);
+}
+
+#nav-utility-icons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+#nav-utility-icons button {
+    font-size: 1.5rem;
+    color: gray;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#nav-utility-icons button:hover {
+    background-color: rgb(235, 235, 235);
+}
+
+#nav-utility-icons button:focus-visible,
+#hamburger-icon-button:focus-visible,
+#nav-search-button:focus-visible,
+#nav-clear-button:focus-visible {
+    outline: 2px solid #0284c7;
+    outline-offset: 2px;
+}
