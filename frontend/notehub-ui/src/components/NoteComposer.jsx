@@ -80,21 +80,21 @@ function NoteComposer({isPinned,setIsPinned,onCreate})
     else
     {
         displayContent=<div className="NoteComposer-expanded-container">
-            <div className="section-top">
+            <div className="NoteComposer-section-top">
                 <input type="text" placeholder='Title' value={title} onChange={(e)=>handleTitleOnChange(e)}/>
                 <button type="button" onClick={()=>setIsPinned(p=>p?false:true)}><img src={`${isPinned?pinlogofill:pinlogo}`} alt="pinlogo" /></button>
             </div>
             {error && <p className="NoteComposer-error">{error}</p>}
-            <div className="section-middle">
+            <div className="NoteComposer-section-middle">
                 <textarea placeholder='Take a note...' value={content} onChange={(e)=>handleContentOnChange(e)}/>
             </div>
-            <div className="section-bottom">
+            <div className="NoteComposer-section-bottom">
                 <button type="button"><img src={colorpallet} alt="Colorpallet Icon" /></button>
                 <button type="button"><img src={imageicon} alt="Image Icon" /></button>
                 <button type="button">&#8630;</button>
                 <button type="button">&#8631;</button>
-                <button className="close-create-button" onClick={handleCloseButton} type="button" disabled={isSubmitting}>Close</button>
-                <button className="close-create-button" onClick={handleSubmit} type="button" disabled={isSubmitting}>Create</button>
+                <button className="NoteComposer-close-create-button" onClick={handleCloseButton} type="button" disabled={isSubmitting}>Close</button>
+                <button className="NoteComposer-close-create-button" onClick={handleSubmit} type="button" disabled={isSubmitting}>Create</button>
             </div>
             
         </div>

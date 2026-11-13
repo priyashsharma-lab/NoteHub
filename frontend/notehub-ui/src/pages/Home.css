@@ -1,0 +1,9 @@
+
+
+.content-area {
+  flex: 1; /* Takes up all remaining width next to the Sidebar */
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers NoteComposer horizontally */
+}

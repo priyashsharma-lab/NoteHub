@@ -1,0 +1,120 @@
+.NoteCard-container
+{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgray;
+    padding: 10px;
+    min-width: 0;
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 120px;
+    margin: 0;
+}
+.NoteCard-container .NoteCard-pin-button,
+.NoteCard-container .NoteCard-section-bottom 
+{
+  opacity: 0;
+  visibility: hidden; 
+  transition: opacity 0.15s ease-in-out;
+}
+.NoteCard-container:hover .NoteCard-pin-button,
+.NoteCard-container:hover .NoteCard-section-bottom,
+.NoteCard-container:focus-within .NoteCard-pin-button,
+.NoteCard-container:focus-within .NoteCard-section-bottom 
+{
+    opacity: 1;
+    visibility: visible;
+}
+.NoteCard-container:hover
+{
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+}
+
+.NoteCard-section-top
+{
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    align-items: center;
+}
+.NoteCard-section-top span
+{
+    width: 94%;
+    font-size: 1.2rem;
+}
+.NoteCard-pin-button
+{
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    margin-right: 2px;
+    width: 32px; 
+    height: 32px; 
+    padding: 6px;
+    cursor: pointer;
+}
+.NoteCard-pin-button:hover
+{
+    background-color: rgba(0, 0, 0, 0.07);
+}
+
+.NoteCard-section-middle
+{
+    display: flex;
+    min-width: 0;
+    height: fit-content;
+    align-items: center;
+}
+.NoteCard-section-middle p
+{
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    height: fit-content;
+    resize: none;
+    overflow: hidden;
+    outline: none;
+    font-size: 14px;
+    line-height: 1.5;   
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    margin-right: 2px;
+}
+
+.NoteCard-section-bottom
+{
+    display: flex;
+    height: 30px;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+.NoteCard-section-bottom button
+{
+    width: 32px; 
+    height: 32px; 
+    padding: 6px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    margin-left: 10px;
+    font-size: 1.04rem;
+    cursor: pointer;
+}
+.NoteCard-section-bottom button:hover
+{
+    background-color: rgba(0, 0, 0, 0.07);
+}
+.NoteCard-section-bottom button img
+{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.NoteCard-empty-text { color: #80868b; font-style: italic; font-size: 0.85rem; }

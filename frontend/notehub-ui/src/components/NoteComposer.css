@@ -34,14 +34,13 @@
     padding: 4px;
     box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
 }
-.section-top
+.NoteComposer-section-top
 {
     display: flex;
-    /* height: 35%; */
     height: 40px;
     align-items: center;
 }
-.section-top input
+.NoteComposer-section-top input
 {
     width: 94%;
     height: 100%;
@@ -49,7 +48,7 @@
     outline: none;
     font-size: 1.2rem;
 }
-.section-top button
+.NoteComposer-section-top button
 {
     background-color: white;
     border: none;
@@ -59,26 +58,26 @@
     height: 32px; 
     padding: 6px;
 }
-.section-top button img
+.NoteComposer-section-top button img
 {
     width: 100%;
     height: 100%;
     object-fit: contain;
     display: block;
 }
-.section-top button:hover
+.NoteComposer-section-top button:hover
 {
     background-color: rgba(0, 0, 0, 0.07);
 }
 
-.section-middle
+.NoteComposer-section-middle
 {
     display: flex;
     min-width: 0;
     height: fit-content;
     align-items: center;
 }
-.section-middle textarea
+.NoteComposer-section-middle textarea
 {
     width: 100%;
     max-width: 100%;
@@ -97,16 +96,15 @@
     margin-right: 2px;
 }
 
-.section-bottom
+.NoteComposer-section-bottom
 {
     display: flex;
-    /* height: 35%; */
     height: 40px;
     align-items: center;
     gap: 10px;
     justify-content: center;
 }
-.section-bottom button
+.NoteComposer-section-bottom button
 {
     width: 30px;
     height: 30px;
@@ -116,17 +114,17 @@
     margin-left: 10px;
     font-size: 1.04rem;
 }
-.close-create-button
+.NoteComposer-close-create-button
 {
     border-radius: 2px !important;
     width: fit-content !important;
     opacity: 80%;
 }
-.section-bottom button:hover
+.NoteComposer-section-bottom button:hover
 {
     background-color: rgba(0, 0, 0, 0.07);
 }
-.section-bottom button img
+.NoteComposer-section-bottom button img
 {
     width: 100%;
     height: 100%;
