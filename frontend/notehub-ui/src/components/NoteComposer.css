@@ -1,0 +1,135 @@
+.NoteComposer-container
+{
+    display: flex;
+    width: 50%;
+    max-width: 600px;
+    height: fit-content;
+}
+.NoteComposer-collapsed-container
+{
+    display: flex;
+    border: 1px solid lightgray;
+    border-radius: 6px;
+    width: 100%;
+    cursor:text;
+    height: 40px;
+    align-items: center;
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+}
+.NoteComposer-collapsed-container span
+{
+    font-size: 15px;
+    opacity: 60%;
+    margin-left: 10px;
+}
+
+.NoteComposer-expanded-container
+{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    border: 1px solid lightgray;
+    padding: 4px;
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+}
+.section-top
+{
+    display: flex;
+    /* height: 35%; */
+    height: 40px;
+    align-items: center;
+}
+.section-top input
+{
+    width: 94%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 1.2rem;
+}
+.section-top button
+{
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    margin-right: 2px;
+    width: 32px; 
+    height: 32px; 
+    padding: 6px;
+}
+.section-top button img
+{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+.section-top button:hover
+{
+    background-color: rgba(0, 0, 0, 0.07);
+}
+
+.section-middle
+{
+    display: flex;
+    min-width: 0;
+    height: fit-content;
+    align-items: center;
+}
+.section-middle textarea
+{
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    height: fit-content;
+    resize: none;
+    overflow: hidden;
+    outline: none;
+    font-size: 14px;
+    line-height: 1.5;
+    field-sizing: content;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    margin-right: 2px;
+}
+
+.section-bottom
+{
+    display: flex;
+    /* height: 35%; */
+    height: 40px;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+.section-bottom button
+{
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    margin-left: 10px;
+    font-size: 1.04rem;
+}
+.close-create-button
+{
+    border-radius: 2px !important;
+    width: fit-content !important;
+    opacity: 80%;
+}
+.section-bottom button:hover
+{
+    background-color: rgba(0, 0, 0, 0.07);
+}
+.section-bottom button img
+{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
