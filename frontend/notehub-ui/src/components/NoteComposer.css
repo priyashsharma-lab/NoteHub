@@ -37,6 +37,7 @@
 .NoteComposer-section-top
 {
     display: flex;
+
     height: 40px;
     align-items: center;
 }
@@ -99,6 +100,7 @@
 .NoteComposer-section-bottom
 {
     display: flex;
+    /* height: 35%; */
     height: 40px;
     align-items: center;
     gap: 10px;
