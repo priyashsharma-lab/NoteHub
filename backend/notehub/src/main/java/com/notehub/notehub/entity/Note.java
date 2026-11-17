@@ -1,6 +1,5 @@
 package com.notehub.notehub.entity;
 
-import com.notehub.notehub.dto.NoteDto;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -26,6 +25,9 @@ public class Note
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private LocalDateTime deletedAt=null;
+
     public Note(){}
 
     @PrePersist
@@ -93,4 +95,11 @@ public class Note
         this.updatedAt = updatedAt;
     }
 
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 }

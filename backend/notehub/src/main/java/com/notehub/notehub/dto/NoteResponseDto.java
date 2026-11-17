@@ -11,6 +11,7 @@ public class NoteResponseDto
     private String title;
     private String content;
     private boolean pinned;
+    private LocalDateTime deletedAt;
 
     public Long getId() {
         return id;
@@ -70,4 +71,12 @@ public class NoteResponseDto
 
 
     public NoteResponseDto(){}
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
 }

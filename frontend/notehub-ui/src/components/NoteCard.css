@@ -11,6 +11,7 @@
     width: 100%;
     min-height: 120px;
     margin: 0;
+    overflow: visible;
 }
 .NoteCard-container .NoteCard-pin-button,
 .NoteCard-container .NoteCard-section-bottom 
@@ -64,25 +65,27 @@
 {
     display: flex;
     min-width: 0;
-    height: fit-content;
-    align-items: center;
+    margin: 6px 0;
+    align-items: flex-start;
+    flex: 1;
 }
 .NoteCard-section-middle p
 {
     width: 100%;
     max-width: 100%;
-    border: none;
-    height: fit-content;
-    resize: none;
-    overflow: hidden;
-    outline: none;
+    margin: 0;
     font-size: 14px;
-    line-height: 1.5;   
+    line-height: 1.5;
     box-sizing: border-box;
     overflow-wrap: break-word;
     word-wrap: break-word;
     white-space: pre-wrap;
-    margin-right: 2px;
+
+    /* Cleanly truncates long notes with "..." after 14 lines (no scrollbar on card) */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 14; 
+    overflow: hidden;
 }
 
 .NoteCard-section-bottom
@@ -92,8 +95,9 @@
     align-items: center;
     gap: 10px;
     justify-content: center;
+    position: relative;
 }
-.NoteCard-section-bottom button
+.NoteCard-section-bottom>button
 {
     width: 32px; 
     height: 32px; 
@@ -118,3 +122,36 @@
 }
 
 .NoteCard-empty-text { color: #80868b; font-style: italic; font-size: 0.85rem; }
+
+.NoteCard-moremenu-container
+{
+    border: 1px solid lightgray;
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    z-index: 1000;
+    width: max-content;
+    min-width: 140px;
+    align-items: center;
+    height: fit-content;
+    top: 100%;
+    right: 0;
+}
+.NoteCard-moremenu-container button
+{
+    width: 100%; 
+    height: 27px; 
+    background-color: white;
+    border: none;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+.NoteCard-moremenu-container button:hover
+{
+    opacity: 100%;
+    background-color: rgb(235, 233, 233);   
+}
+.NoteCard-moremenu-container button span
+{
+    white-space: nowrap;
+    width: fit-content;
+}

@@ -1,5 +1,4 @@
-.sidebar-container
-{
+.sidebar-container {
     width: 260px;
     margin: 0;
     padding: 0;
@@ -14,19 +13,23 @@
     border-right: 1px solid #e0e0e0;
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.sidebar-container.collapsed 
-{ 
+
+.sidebar-container.collapsed { 
     width: 68px; 
 }
 
-.sidebar-container ul
-{
+.sidebar-container ul {
     list-style: none;
     padding-left: 0;
     margin: 0;
 }
-.sidebar-buttons-,.sidebar-buttons-wide
-{
+
+.sidebar-buttons-, .sidebar-buttons-wide {
+    padding: 0;
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box;
+
     border: none;
     height: 40px;
     width: 260px;
@@ -38,51 +41,62 @@
     margin-top: 30px;
     align-items: center;
     background-color: white;
-     overflow: hidden; 
+    overflow: hidden; 
     white-space: nowrap; 
     transition: 
-    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    border-radius 0.3s ease,
-    background-color 0.2s ease;
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        border-radius 0.3s ease,
+        background-color 0.2s ease;
+
+    text-decoration: none;
+    color: inherit;
 }
-.sidebar-buttons-:hover,.sidebar-buttons-wide:hover
-{
+
+.sidebar-buttons-:hover, .sidebar-buttons-wide:hover {
     background-color: rgb(232, 230, 230);
 }
-.sidebar-buttons-[data-active="true"],
-.sidebar-buttons-wide[data-active="true"],
-.sidebar-buttons-[data-active="true"]:hover,
-.sidebar-buttons-wide[data-active="true"]:hover {
-  background-color: #FDEDB3;
+
+.sidebar-buttons-.active,
+.sidebar-buttons-wide.active,
+.sidebar-buttons-.active:hover,
+.sidebar-buttons-wide.active:hover {
+    background-color: #FDEDB3;
 }
+
 .sidebar-buttons- {
-  width: 48px;
-  border-radius: 50%;
-  justify-content: center;
-  margin-left: 10px;
-  gap: 0;
+    width: 48px;
+    border-radius: 50%;
+    justify-content: center;
+    margin-left: 10px;
+    gap: 0;
 }
 
 .sidebar-buttons-wide {
-  width: 230px;
-  border-radius: 0 24px 24px 0;
-  gap: 16px;
-  margin-left: 0;   
+    width: 230px;
+    border-radius: 0 24px 24px 0;
+    gap: 16px;
+    margin-left: 0;
+    padding-left: 24px; 
 }
 
-.sidebar-button-icons
-{
+.sidebar-button-icons {
     font-size: 1.3rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
 }
 
 .sidebar-button-labels {
-  opacity: 1;
-  transition: opacity 0.2s ease;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+    text-decoration: none;
+    color: inherit;
 }
 
 .sidebar-buttons- .sidebar-button-labels {
-  opacity: 0;
-  width: 0;
-  pointer-events: none;
+    opacity: 0;
+    width: 0;
+    pointer-events: none;
 }

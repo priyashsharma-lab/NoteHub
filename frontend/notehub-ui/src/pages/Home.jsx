@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NoteComposer from '../components/NoteComposer.jsx';
-import {createNote,getAllNotes,updateNote} from '../services/noteService.js';
+import {createNote,getAllNotes,updateNote,trashNote} from '../services/noteService.js';
 import NoteGrid from '../components/NoteGrid.jsx';
 import './Home.css';
 import NoteEditor from '../components/NoteEditor.jsx';
@@ -9,7 +9,7 @@ function Home()
     const [isPinned,setIsPinned]=useState(false);
     const [notes,setNotes]=useState([]);
     const [selectedNote,setSelectedNote]=useState(null);
-
+    const [feedbackMessage,setFeedbackMessage]=useState("");
     function onNoteClick(note)
     {
         setSelectedNote(note);
@@ -48,12 +48,36 @@ function Home()
         }
         loadNotes();
         },[]);
+
+    async function onDelete(note)
+    {
+        const response=await trashNote(note.id);
+        setNotes(n=>n.filter((nt)=>nt.id!==note.id));
+        return response;
+    }
+    const feedbackMessageContent=(
+        <div className="Home-feedbackMessage-container">
+            <span className={feedbackMessage.startsWith("Error")?"Home-feedbackmessage-span-error":"Home-feedbackmessage-span"}>{feedbackMessage}</span>
+            <button onClick={()=>setFeedbackMessage("")}>&#10005;</button>
+        </div>
+    );
+    useEffect(
+        ()=>
+        {
+            if (feedbackMessage==="") return;
+            const timeoutId=setTimeout(()=>{
+                setFeedbackMessage("");
+            },10000);
+            return ()=>clearTimeout(timeoutId);
+        },[feedbackMessage]);
+
     return(
         <>
             <main className="content-area">
                 <NoteComposer isPinned={isPinned} setIsPinned={setIsPinned} onCreate={onCreate}/>
-                <NoteGrid notes={notes} onNoteClick={onNoteClick}/>
+                <NoteGrid notes={notes} onNoteClick={onNoteClick} onDelete={onDelete} setFeedbackMessage={setFeedbackMessage}/>
                 {selectedNote&&<NoteEditor note={selectedNote} onSaveUpdate={onSaveUpdate} onCloseUpdate={onCloseUpdate}/>}
+                {feedbackMessage&&feedbackMessageContent}
             </main>
         </>
     )

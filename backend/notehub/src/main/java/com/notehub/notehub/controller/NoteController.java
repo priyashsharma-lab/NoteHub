@@ -55,9 +55,35 @@ public class NoteController
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNote(@Positive @PathVariable("id") Long id)
+    public ResponseEntity<Void> trashNote(@Positive @PathVariable("id") Long id)
     {
-        noteService.deleteNote(id);
+        noteService.trashNote(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/trash")
+    public List<NoteResponseDto> getDeletedNotes()
+    {
+        return noteService.getDeletedNotes().stream().map(n->noteMapper.toNoteResponseDto(n)).toList();
+    }
+
+    @PostMapping("/{id}/restore")
+    public ResponseEntity<NoteResponseDto> restoreNote(@Positive @PathVariable("id") Long id)
+    {
+        return ResponseEntity.ok(noteMapper.toNoteResponseDto(noteService.restoreNote(id)));
+    }
+
+    @DeleteMapping("/{id}/forever")
+    public ResponseEntity<Void> deleteNoteForever(@Positive @PathVariable("id") Long id)
+    {
+        noteService.deleteNoteForever(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/emptytrash")
+    public ResponseEntity<Void> deleteAllTrashNotes()
+    {
+        noteService.deleteAllTrashNotes();
         return ResponseEntity.noContent().build();
     }
 }

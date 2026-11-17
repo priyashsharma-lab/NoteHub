@@ -10,3 +10,5 @@ spring.jpa.properties.hibernate.format_sql=true
 server.port=8080
 logging.level.root=INFO
 logging.level.com.notehub.notehub=DEBUG
+
+note.cleanup.delay=1

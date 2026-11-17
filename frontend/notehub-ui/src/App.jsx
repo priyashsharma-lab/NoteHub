@@ -3,14 +3,11 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import './index.css';
 import Home from './pages/Home.jsx';
+import { Routes,Route,Navigate} from 'react-router-dom';
+import Trash from './pages/Trash.jsx';
 function App()
 {
     const [isCollapsed,setIsCollapsed]=useState(false);
-    const [activeSection,setActiveSection]=useState("notes");
-    function onSectionChange(selectedSection)
-    {
-        setActiveSection(selectedSection);
-    }
     function onMenuClick()
     {
         setIsCollapsed(i=>i?false:true);
@@ -19,8 +16,12 @@ function App()
         <>
             <Navbar onMenuClick={onMenuClick}/>  
             <div className="main-layout">
-                <Sidebar isCollapsed={isCollapsed} activeSection={activeSection} onSectionChange={onSectionChange}/>
-                <Home/>
+                <Sidebar isCollapsed={isCollapsed}/>
+                <Routes>
+                    <Route path="/" element={<Navigate to="/notes" replace />} />
+                    <Route path="/notes" element={<Home/>}/>
+                    <Route path="/trash" element={<Trash/>}/>
+                </Routes>
             </div>
         </>
     )

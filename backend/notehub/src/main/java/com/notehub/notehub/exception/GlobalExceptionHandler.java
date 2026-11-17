@@ -76,6 +76,14 @@ public class GlobalExceptionHandler
         log.warn("Method Argument Type Mismatch at path: {}",request.getRequestURI());
         return ResponseEntity.badRequest().body(error);
     }
+
+    @ExceptionHandler(InvalidNoteStateException.class)
+    public ResponseEntity<ErrorResponseDto> handleInvalidNoteStateException(InvalidNoteStateException e,HttpServletRequest request)
+    {
+        log.warn("Invalid Note State {}",e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDto(HttpStatus.CONFLICT.value(),"Conflict",e.getMessage(),request.getRequestURI()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGeneralException(Exception e,HttpServletRequest request)
     {

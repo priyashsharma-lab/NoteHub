@@ -16,6 +16,7 @@ public class NoteMapper
         noteResponseDto.setPinned(note.isPinned());
         noteResponseDto.setCreatedAt(note.getCreatedAt());
         noteResponseDto.setUpdatedAt(note.getUpdatedAt());
+        noteResponseDto.setDeletedAt(note.getDeletedAt());
         return noteResponseDto;
     }
 
