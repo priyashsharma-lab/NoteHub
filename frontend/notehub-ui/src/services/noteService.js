@@ -50,3 +50,22 @@ export async function emptyTrash()
 {
     await axiosInstance.delete("/notes/emptytrash");
 }
+
+export async function archiveNote(id)
+{
+    const response=await axiosInstance.patch(`/notes/${id}/archive`);
+    return response.data;
+}
+
+export async function unarchiveNote(id)
+{
+    const response=await axiosInstance.patch(`/notes/${id}/unarchive`);
+    return response.data;
+}
+
+export async function getAllArchivedNotes()
+{
+    const response=await axiosInstance.get(`/notes/archive`);
+    return response.data;
+}
+

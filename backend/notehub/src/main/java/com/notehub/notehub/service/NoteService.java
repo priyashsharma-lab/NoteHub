@@ -16,4 +16,7 @@ public interface NoteService
     public Note restoreNote(Long id);
     public void deleteNoteForever(Long id);
     public void deleteAllTrashNotes();
+    public Note archiveNote(Long id);
+    public Note unarchiveNote(Long id);
+    public List<Note> getAllArchiveNotes();
 }

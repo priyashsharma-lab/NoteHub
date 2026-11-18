@@ -1,0 +1,97 @@
+import { useEffect, useState } from 'react';
+import { createNote, updateNote, trashNote } from '../services/noteService.js';
+
+export function useNotes(fetchNotesFn)
+{
+    const [notes,setNotes]=useState([]);
+    const [selectedNote,setSelectedNote]=useState(null);
+    const [feedbackMessage,setFeedbackMessage]=useState("");
+    const [isProcessing,setIsProcessing]=useState(false);
+
+    function onNoteClick(note)
+    {
+        setSelectedNote(note);
+    }
+
+    async function onSaveUpdate(note)
+    {
+        try
+        {
+            setIsProcessing(true);
+            const request={title:note.title,content:note.content};
+            const response=await updateNote(note.id,request);
+            setNotes(n=>[response,...n.filter((note)=>note.id!==response.id)]);
+            return response;
+        }
+        finally
+        {
+            setIsProcessing(false);
+        }
+    }
+
+    function onCloseUpdate()
+    {
+        setSelectedNote(null);
+    }
+
+    async function onCreate(data)
+    {
+        try
+        {
+            setIsProcessing(true);
+            const noteData={title:data.title,content:data.content};
+            const response=await createNote(noteData);
+            setNotes(n=>[...n,response]);
+            return response;
+        }
+        finally
+        {
+            setIsProcessing(false);
+        }
+    }
+
+    useEffect(()=>
+    {
+        const loadNotes=async ()=>
+        {
+            try
+            {
+                setNotes(await fetchNotesFn());
+            }
+            catch (error)
+            {
+                console.log("Fetching Notes Failed"+(error.response?.data?.message||error.message));
+            }
+        }
+        loadNotes();
+    },[fetchNotesFn]);
+
+    async function onDelete(note)
+    {
+        try
+        {
+            setIsProcessing(true);
+            const response=await trashNote(note.id);
+            setNotes(n=>n.filter((nt)=>nt.id!==note.id));
+            return response;
+        }
+        finally
+        {
+            setIsProcessing(false);
+        }
+    }
+
+    useEffect(
+        ()=>
+        {
+            if (feedbackMessage==="") return;
+            const timeoutId=setTimeout(()=>{
+                setFeedbackMessage("");
+            },10000);
+            return ()=>clearTimeout(timeoutId);
+        },[feedbackMessage]);
+
+    const gridProps={notes,onNoteClick,onDelete,setFeedbackMessage,isProcessing,setIsProcessing};
+
+    return {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps};
+}

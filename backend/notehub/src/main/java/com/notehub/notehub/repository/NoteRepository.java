@@ -12,11 +12,12 @@ import java.util.Optional;
 
 public interface NoteRepository extends JpaRepository<Note,Long>
 {
-    public List<Note> findByDeletedAtIsNull();
+    public List<Note> findByDeletedAtIsNullAndArchivedIsFalse();
     public List<Note> findByDeletedAtIsNotNull();
     public Optional<Note> findByIdAndDeletedAtIsNull(Long id);
     public void deleteByDeletedAtIsNotNull();
     @Modifying
     @Query("DELETE FROM Note n WHERE n.deletedAt IS NOT NULL AND n.deletedAt <= :cutoff")
-    int deleteExpiredNotes(@Param("cutoff") LocalDateTime cutoff);
+    public int deleteExpiredNotes(@Param("cutoff") LocalDateTime cutoff);
+    public List<Note> findByArchivedIsTrueAndDeletedAtIsNull();
 }

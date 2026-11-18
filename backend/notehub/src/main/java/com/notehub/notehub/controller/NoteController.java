@@ -86,4 +86,25 @@ public class NoteController
         noteService.deleteAllTrashNotes();
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}/archive")
+    public ResponseEntity<NoteResponseDto> archiveNote(@Positive @PathVariable("id") Long id)
+    {
+        Note note=noteService.archiveNote(id);
+        return ResponseEntity.ok(noteMapper.toNoteResponseDto(note));
+    }
+
+    @PatchMapping("/{id}/unarchive")
+    public ResponseEntity<NoteResponseDto> unarchiveNote(@Positive @PathVariable("id") Long id)
+    {
+        Note note=noteService.unarchiveNote(id);
+        return ResponseEntity.ok(noteMapper.toNoteResponseDto(note));
+    }
+
+    @GetMapping("/archive")
+    public List<NoteResponseDto> getAllArchivedNotes()
+    {
+        List<Note> notes=noteService.getAllArchiveNotes();
+        return notes.stream().map((note)->noteMapper.toNoteResponseDto(note)).toList();
+    }
 }

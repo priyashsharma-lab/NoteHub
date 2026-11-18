@@ -5,7 +5,7 @@ import imageicon from '../assets/imageicon.png'
 import colorpallet from '../assets/colorpallet.png'
 import archiveicon from '../assets/archiveicon.svg'
 import { useState } from 'react';
-function NoteEditor({note,onSaveUpdate,onCloseUpdate})
+function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcessing,handleUnarchiveNote})
 {
     const [selectedNote,setSelectedNote]=useState({...note,content:(note.content===null?"":note.content)});
     const [error,setError]=useState("");
@@ -78,7 +78,10 @@ function NoteEditor({note,onSaveUpdate,onCloseUpdate})
                 <div className="NoteEditor-section-bottom">
                     <button type="button" onClick={(e) => e.stopPropagation()}><img src={colorpallet} alt="Colorpallet Icon" /></button>
                     <button type="button" onClick={(e) => e.stopPropagation()}><img src={imageicon} alt="Image Icon" /></button>
-                    <button type="button" onClick={(e) => e.stopPropagation()}><img src={archiveicon} alt="archiveicon" /></button>
+                    <button type="button" onClick={async (e)=>{
+                        e.stopPropagation();
+                        {!note.archived?await handleArchiveNote(note):await handleUnarchiveNote(note)}
+                    }} disabled={isProcessing}><img src={archiveicon} alt="archiveicon" /></button>
                     <button className="NoteEditor-close-create-button" type="button" disabled={isSubmitting} onClick={onCloseUpdate}>Close</button>
                     <button className="NoteEditor-close-create-button" type="button" onClick={handleSaveUpdate} disabled={isSubmitting}>Update</button>
                     {/* Add more later */}

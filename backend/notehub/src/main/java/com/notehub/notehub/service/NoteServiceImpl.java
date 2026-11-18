@@ -38,7 +38,7 @@ public class NoteServiceImpl implements NoteService
     public List<Note> getAllNotes()
     {
         log.debug("Fetching all notes");
-        return noteRepository.findByDeletedAtIsNull();
+        return noteRepository.findByDeletedAtIsNullAndArchivedIsFalse();
     }
 
     @Override
@@ -68,6 +68,7 @@ public class NoteServiceImpl implements NoteService
             throw new InvalidNoteStateException("Note is already trashed with id "+id);
         }
         existingNote.setDeletedAt(LocalDateTime.now());
+        existingNote.setArchived(false);
         log.info("Trashed a note with id: {}",id);
     }
 
@@ -112,5 +113,58 @@ public class NoteServiceImpl implements NoteService
     {
         noteRepository.deleteByDeletedAtIsNotNull();
         log.info("All Trash Notes are deleted Permanently!");
+    }
+
+    @Override
+    @Transactional
+    public Note archiveNote(Long id)
+    {
+        Note note=noteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Note not found with ID: "+id));
+        if (note.isArchived())
+        {
+            log.warn("Note with id {} is already archived!",id);
+            throw new InvalidNoteStateException("Note with id "+id+" is already archived!");
+        }
+        else if (note.getDeletedAt()!=null)
+        {
+            log.warn("Note with id {} is trashed and cannot be archived",id);
+            throw new InvalidNoteStateException("Note with id "+id+" is Trashed!");
+        }
+        else
+        {
+            note.setArchived(true);
+            log.info("Note with id {} is archived successfully",id);
+            return note;
+        }
+    }
+
+    @Override
+    @Transactional
+    public Note unarchiveNote(Long id)
+    {
+        Note note=noteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Note not found with ID: "+id));
+        if (!note.isArchived())
+        {
+            log.warn("Note with id {} is not archived!",id);
+            throw new InvalidNoteStateException("Note with id "+id+" is not archived!");
+        }
+        else if (note.getDeletedAt()!=null)
+        {
+            log.warn("Note with id {} is trashed and cannot be unarchived",id);
+            throw new InvalidNoteStateException("Note with id "+id+" is Trashed!");
+        }
+        else
+        {
+            note.setArchived(false);
+            log.info("Note with id {} is unarchived successfully",id);
+            return note;
+        }
+    }
+
+    @Override
+    public List<Note> getAllArchiveNotes()
+    {
+        log.debug("Fetching all Archived Notes");
+        return noteRepository.findByArchivedIsTrueAndDeletedAtIsNull();
     }
 }

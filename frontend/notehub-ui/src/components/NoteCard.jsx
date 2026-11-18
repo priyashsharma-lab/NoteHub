@@ -7,10 +7,9 @@ import archiveicon from '../assets/archiveicon.svg';
 import restoreicon from '../assets/restoreicon.jpg';
 import deleteforevericon from '../assets/deleteforevericon.png';
 import { useEffect, useRef, useState } from 'react';
-function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDeleteForever,onRestore,isProcessing})
+function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDeleteForever,onRestore,isProcessing,handleArchiveNote,setIsProcessing,handleUnarchiveNote})
 {
     const [isMoreMenuActive,setIsMoreMenuActive]=useState(false);
-    const [isDeleting,setIsDeleting]=useState(false);
     const notecardSectionBottomRef=useRef(null);
     useEffect(
         ()=>
@@ -39,7 +38,7 @@ function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDelete
         e.stopPropagation();
         try
         {
-            setIsDeleting(true);
+            setIsProcessing(true);
             await onDelete(note);
             setFeedbackMessage("Note Deleted Successfully");
         }
@@ -50,14 +49,14 @@ function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDelete
         }
         finally
         {
-            setIsDeleting(false);
+            setIsProcessing(false);
         }
     }
 
     const moreMenuContent=(
         <div className="NoteCard-moremenu-container">
             <button onClick={(e)=>e.stopPropagation()}>Make a copy</button>
-            <button onClick={(e)=>handleDeleteButtonOnClick(e)} disabled={isDeleting}>Delete</button>
+            <button onClick={(e)=>handleDeleteButtonOnClick(e)} disabled={isProcessing}>Delete</button>
         </div>
     );
     const trashPageBottomSectionContent=(
@@ -80,7 +79,10 @@ function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDelete
             <>
             <button type="button" onClick={(e) => e.stopPropagation()}><img src={colorpallet} alt="Colorpallet Icon" /></button>
             <button type="button" onClick={(e) => e.stopPropagation()}><img src={imageicon} alt="Image Icon" /></button>
-            <button type="button" onClick={(e) => e.stopPropagation()}><img src={archiveicon} alt="archiveicon" /></button>
+            <button type="button" onClick={async (e)=>{
+                e.stopPropagation();
+                !note.archived?await handleArchiveNote(note):await handleUnarchiveNote(note);
+            }} disabled={isProcessing}><img src={archiveicon} alt="archiveicon" /></button>
             <button type="button" onClick={(e) => handleMoreButtonOnClick(e)}><span>&#8942;</span></button>                {isMoreMenuActive?moreMenuContent:null}
             {/* Add more later */}
             </>

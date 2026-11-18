@@ -1,0 +1,22 @@
+.Archive-container
+{
+  flex: 1; /* Takes up all remaining width next to the Sidebar */
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers NoteComposer horizontally */
+}
+.Archive-nonotesintrash-container
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.Archive-nonotesintrash-container>p
+{   
+    font-size: 1.4rem;
+    opacity: 50%;
+}
