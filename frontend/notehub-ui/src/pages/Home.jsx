@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import NoteComposer from '../components/NoteComposer.jsx';
-import { getAllNotes, archiveNote } from '../services/noteService.js';
-import NoteGrid from '../components/NoteGrid.jsx';
+import { getAllNotes, archiveNote ,pinNote,unpinNote} from '../services/noteService.js';
 import './Home.css';
 import NoteEditor from '../components/NoteEditor.jsx';
 import { useNotes } from '../hooks/useNotes.js';
+import PinnedNotes from '../components/PinnedNotes.jsx';
+import OtherNotes from '../components/OtherNotes.jsx';
 
 function Home()
 {
     const [isPinned,setIsPinned]=useState(false);
-    const {setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps}=useNotes(getAllNotes);
+    const {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote}=useNotes(getAllNotes);
 
+    const { pinnedNotes, otherNotes } = useMemo(() => (
+        {
+            pinnedNotes: notes.filter((n) => n.pinned),
+            otherNotes: notes.filter((n) => !n.pinned),
+        }), [notes]);
+    
     async function handleArchiveNote(noteToArchive)
     {
         try
@@ -31,6 +38,57 @@ function Home()
         }
     }
 
+    async function handlePinNote(note)
+    {
+        try
+        {
+            setIsProcessing(true);
+            const response=await pinNote(note.id);
+            setNotes(n=>n.map((nt)=>(nt.id===response.id?response:nt)).sort((a,b)=>{
+                if(a.pinned!==b.pinned)
+                {
+                    return Number(b.pinned)-Number(a.pinned);
+                }
+                return new Date(b.updatedAt) - new Date(a.updatedAt);
+            }));
+            selectedNote?.id===response?.id&&setSelectedNote(response);
+            setFeedbackMessage("Note Pinned");
+        }
+        catch(error)
+        {
+            setFeedbackMessage("Error:Pinning Failed! "+(error.response?.data?.message || error.message || ""));
+        }
+        finally
+        {
+            setIsProcessing(false);
+        }
+    }
+    async function handleUnpinNote(note)
+    {
+        try
+        {
+            setIsProcessing(true);
+            const response=await unpinNote(note.id);
+            setNotes(n=>n.map((nt)=>(nt.id===response.id?response:nt)).sort((a,b)=>{
+                if(a.pinned!==b.pinned)
+                {
+                    return Number(b.pinned)-Number(a.pinned);
+                }
+                return new Date(b.updatedAt) - new Date(a.updatedAt);
+            }));
+            selectedNote?.id===response.id&&setSelectedNote(response);
+            setFeedbackMessage("Note Unpinned");
+        }
+        catch(error)
+        {
+            setFeedbackMessage("Error:UnPinning Failed! "+(error.response?.data?.message || error.message || ""));
+        }
+        finally
+        {
+            setIsProcessing(false);
+        }
+    }
+
     const feedbackMessageContent=(
         <div className="Home-feedbackMessage-container">
             <span className={feedbackMessage.startsWith("Error")?"Home-feedbackmessage-span-error":"Home-feedbackmessage-span"}>{feedbackMessage}</span>
@@ -42,8 +100,9 @@ function Home()
         <>
             <main className="content-area">
                 <NoteComposer isPinned={isPinned} setIsPinned={setIsPinned} onCreate={onCreate}/>
-                <NoteGrid {...gridProps} handleArchiveNote={handleArchiveNote}/>
-                {selectedNote&&<NoteEditor note={selectedNote} onSaveUpdate={onSaveUpdate} onCloseUpdate={onCloseUpdate} handleArchiveNote={handleArchiveNote} isProcessing={isProcessing} />}
+                {pinnedNotes.length===0?undefined:<PinnedNotes {...gridProps} handleArchiveNote={handleArchiveNote} notes={pinnedNotes} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote}/>}
+                <OtherNotes {...gridProps} handleArchiveNote={handleArchiveNote} otherNotes={otherNotes} notes={otherNotes} isPinnedNotesEmpty={pinnedNotes.length===0?true:false} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote}/>
+                {selectedNote&&<NoteEditor note={selectedNote} onSaveUpdate={onSaveUpdate} onCloseUpdate={onCloseUpdate} handleArchiveNote={handleArchiveNote} isProcessing={isProcessing} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote}/>}
                 {feedbackMessage&&feedbackMessageContent}
             </main>
         </>

@@ -14,6 +14,8 @@ public class NoteDto
     @Size(max = 10000, message = "Content cannot exceed 10000 characters")
     private String content;
 
+    private boolean pinned;
+
     public String getTitle() {
         return title;
     }
@@ -30,5 +32,11 @@ public class NoteDto
         this.content = content;
     }
 
+    public boolean isPinned() {
+        return pinned;
+    }
 
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
 }

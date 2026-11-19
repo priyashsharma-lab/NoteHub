@@ -20,4 +20,5 @@ public interface NoteRepository extends JpaRepository<Note,Long>
     @Query("DELETE FROM Note n WHERE n.deletedAt IS NOT NULL AND n.deletedAt <= :cutoff")
     public int deleteExpiredNotes(@Param("cutoff") LocalDateTime cutoff);
     public List<Note> findByArchivedIsTrueAndDeletedAtIsNull();
+    public List<Note> findByDeletedAtIsNullAndArchivedIsFalseOrderByPinnedDescUpdatedAtDesc();
 }

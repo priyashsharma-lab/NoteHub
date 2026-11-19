@@ -38,7 +38,7 @@ public class NoteServiceImpl implements NoteService
     public List<Note> getAllNotes()
     {
         log.debug("Fetching all notes");
-        return noteRepository.findByDeletedAtIsNullAndArchivedIsFalse();
+        return noteRepository.findByDeletedAtIsNullAndArchivedIsFalseOrderByPinnedDescUpdatedAtDesc();
     }
 
     @Override
@@ -133,6 +133,10 @@ public class NoteServiceImpl implements NoteService
         else
         {
             note.setArchived(true);
+            if (note.isPinned())
+            {
+                note.setPinned(false);
+            }
             log.info("Note with id {} is archived successfully",id);
             return note;
         }
@@ -164,7 +168,54 @@ public class NoteServiceImpl implements NoteService
     @Override
     public List<Note> getAllArchiveNotes()
     {
-        log.debug("Fetching all Archived Notes");
+        log.info("Fetching all Archived Notes");
         return noteRepository.findByArchivedIsTrueAndDeletedAtIsNull();
+    }
+
+    @Override
+    @Transactional
+    public Note pinNote(Long id)
+    {
+        Note existingNote=noteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Note not found with ID: "+id));
+        if (existingNote.getDeletedAt()!=null)
+        {
+            log.warn("Note with id {} is trashed and cannot be pinned",id);
+            throw new InvalidNoteStateException("Note with id "+id+" is Trashed!");
+        }
+        else if (existingNote.isPinned())
+        {
+            log.warn("Note with id {} is already pinned!",id);
+            throw new InvalidNoteStateException("Note with id "+id+" is already pinned!");
+        }
+        else
+        {
+            existingNote.setPinned(true);
+            existingNote.setArchived(false);
+            log.info("Note with id {} is pinned",id);
+            return existingNote;
+        }
+    }
+
+    @Override
+    @Transactional
+    public Note unpinNote(Long id)
+    {
+        Note existingNote=noteRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Note not found with ID: "+id));
+        if (existingNote.getDeletedAt()!=null)
+        {
+            log.warn("Note with id {} is trashed and cannot be unpinned",id);
+            throw new InvalidNoteStateException("Note with id "+id+" is Trashed!");
+        }
+        else if (!existingNote.isPinned())
+        {
+            log.warn("Note with id {} is not pinned!",id);
+            throw new InvalidNoteStateException("Note with id "+id+" is not pinned!");
+        }
+        else
+        {
+            existingNote.setPinned(false);
+            log.info("Note with id {} is unpinned",id);
+            return existingNote;
+        }
     }
 }

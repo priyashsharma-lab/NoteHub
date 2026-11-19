@@ -5,7 +5,7 @@ import imageicon from '../assets/imageicon.png'
 import colorpallet from '../assets/colorpallet.png'
 import archiveicon from '../assets/archiveicon.svg'
 import { useState } from 'react';
-function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcessing,handleUnarchiveNote})
+function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcessing,handleUnarchiveNote,handlePinNote,handleUnpinNote})
 {
     const [selectedNote,setSelectedNote]=useState({...note,content:(note.content===null?"":note.content)});
     const [error,setError]=useState("");
@@ -67,8 +67,10 @@ function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcess
                     type="button"
                     aria-label={note.pinned ? "Unpin note" : "Pin note"}
                     title={note.pinned ? "Unpin note" : "Pin note"}
-                    onClick={(e) => e.stopPropagation()}
-                    ><img src={note.pinned ? pinlogofill : pinlogo} alt="Pin icon" /></button>
+                    onClick={async (e) =>{
+                        e.stopPropagation();
+                        note.pinned?await handleUnpinNote(note):await handlePinNote(note);
+                    }} disabled={isProcessing}><img src={note.pinned ? pinlogofill : pinlogo} alt="Pin icon" /></button>
                 </div>
                 {error && <p className="NoteComposer-error">{error}</p>}
                 <div className="NoteEditor-section-middle">
@@ -82,8 +84,8 @@ function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcess
                         e.stopPropagation();
                         {!note.archived?await handleArchiveNote(note):await handleUnarchiveNote(note)}
                     }} disabled={isProcessing}><img src={archiveicon} alt="archiveicon" /></button>
-                    <button className="NoteEditor-close-create-button" type="button" disabled={isSubmitting} onClick={onCloseUpdate}>Close</button>
-                    <button className="NoteEditor-close-create-button" type="button" onClick={handleSaveUpdate} disabled={isSubmitting}>Update</button>
+                    <button className="NoteEditor-close-create-button" type="button" disabled={isSubmitting||isProcessing} onClick={onCloseUpdate}>Close</button>
+                    <button className="NoteEditor-close-create-button" type="button" onClick={handleSaveUpdate} disabled={isSubmitting||isProcessing}>Update</button>
                     {/* Add more later */}
                 </div>
             </div>

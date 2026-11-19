@@ -69,3 +69,14 @@ export async function getAllArchivedNotes()
     return response.data;
 }
 
+export async function pinNote(id)
+{
+    const response=await axiosInstance.patch(`/notes/${id}/pin`);
+    return response.data;
+}
+
+export async function unpinNote(id)
+{
+    const response=await axiosInstance.patch(`/notes/${id}/unpin`);
+    return response.data;
+}

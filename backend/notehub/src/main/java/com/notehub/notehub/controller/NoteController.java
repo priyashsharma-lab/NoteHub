@@ -107,4 +107,18 @@ public class NoteController
         List<Note> notes=noteService.getAllArchiveNotes();
         return notes.stream().map((note)->noteMapper.toNoteResponseDto(note)).toList();
     }
+
+    @PatchMapping("/{id}/pin")
+    public ResponseEntity<NoteResponseDto> pinNote(@Positive @PathVariable("id") Long id)
+    {
+        Note note=noteService.pinNote(id);
+        return ResponseEntity.ok(noteMapper.toNoteResponseDto(note));
+    }
+
+    @PatchMapping("/{id}/unpin")
+    public ResponseEntity<NoteResponseDto> unpinNote(@Positive @PathVariable("id") Long id)
+    {
+        Note note=noteService.unpinNote(id);
+        return ResponseEntity.ok(noteMapper.toNoteResponseDto(note));
+    }
 }

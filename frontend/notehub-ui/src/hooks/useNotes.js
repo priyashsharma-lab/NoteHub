@@ -39,9 +39,9 @@ export function useNotes(fetchNotesFn)
         try
         {
             setIsProcessing(true);
-            const noteData={title:data.title,content:data.content};
+            const noteData={title:data.title,content:data.content,pinned:data.pinned};
             const response=await createNote(noteData);
-            setNotes(n=>[...n,response]);
+            setNotes(n=>[response,...n]);
             return response;
         }
         finally
@@ -93,5 +93,5 @@ export function useNotes(fetchNotesFn)
 
     const gridProps={notes,onNoteClick,onDelete,setFeedbackMessage,isProcessing,setIsProcessing};
 
-    return {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps};
+    return {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote};
 }

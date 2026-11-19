@@ -25,6 +25,7 @@ public class NoteMapper
         Note note=new Note();
         note.setTitle(noteDto.getTitle());
         note.setContent(noteDto.getContent());
+        note.setPinned(noteDto.isPinned());
         return note;
     }
 

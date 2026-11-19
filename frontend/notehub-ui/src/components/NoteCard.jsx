@@ -7,7 +7,7 @@ import archiveicon from '../assets/archiveicon.svg';
 import restoreicon from '../assets/restoreicon.jpg';
 import deleteforevericon from '../assets/deleteforevericon.png';
 import { useEffect, useRef, useState } from 'react';
-function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDeleteForever,onRestore,isProcessing,handleArchiveNote,setIsProcessing,handleUnarchiveNote})
+function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDeleteForever,onRestore,isProcessing,handleArchiveNote,setIsProcessing,handleUnarchiveNote,handlePinNote,handleUnpinNote})
 {
     const [isMoreMenuActive,setIsMoreMenuActive]=useState(false);
     const notecardSectionBottomRef=useRef(null);
@@ -99,7 +99,10 @@ function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDelete
                         type="button"
                         aria-label={note.pinned ? "Unpin note" : "Pin note"}
                         title={note.pinned ? "Unpin note" : "Pin note"}
-                        onClick={(e) => e.stopPropagation()}>
+                        onClick={async (e) =>{
+                            e.stopPropagation();
+                            note.pinned?await handleUnpinNote(note):await handlePinNote(note);
+                        }} disabled={isProcessing}>
                             <img src={note.pinned ? pinlogofill : pinlogo} alt="Pin icon" />
                         </button>
                     </>

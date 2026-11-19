@@ -1,0 +1,14 @@
+.PinnedNotes-container
+{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+}
+.PinnedNotes-container>p
+{
+    opacity: 50%;
+    font-size: 0.75rem;
+    position: relative;
+    left: 20px;
+}

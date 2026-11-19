@@ -36,12 +36,13 @@ function NoteComposer({isPinned,setIsPinned,onCreate})
             await onCreate({
                 title:title.trim(),
                 content:content,
-                isPinned:isPinned
+                pinned:isPinned
             });
             setTitle("");
             setContent("");
             setError("");
             setIsActive(false);
+            setIsPinned(false);
         }
         catch (errors)
         {

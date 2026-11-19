@@ -19,4 +19,7 @@ public interface NoteService
     public Note archiveNote(Long id);
     public Note unarchiveNote(Long id);
     public List<Note> getAllArchiveNotes();
+    public Note pinNote(Long id);
+    public Note unpinNote(Long id);
+
 }
