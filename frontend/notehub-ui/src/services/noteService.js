@@ -86,3 +86,9 @@ export async function changeNoteBackground(id,bgColor)
     const response=await axiosInstance.patch(`/notes/${id}/background`,{backgroundColor:bgColor});
     return response.data;
 }
+
+export async function copyNote(noteData)
+{
+    const response= await axiosInstance.post("/notes",noteData);
+    return response.data;
+}

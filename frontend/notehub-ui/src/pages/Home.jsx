@@ -10,7 +10,7 @@ import OtherNotes from '../components/OtherNotes.jsx';
 function Home()
 {
     const [isPinned,setIsPinned]=useState(false);
-    const {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote,handleChangeNoteBackground}=useNotes(getAllNotes);
+    const {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote,handleChangeNoteBackground,onCopy}=useNotes(getAllNotes);
 
     const { pinnedNotes, otherNotes } = useMemo(() => (
         {
@@ -100,8 +100,8 @@ function Home()
         <>
             <main className="content-area">
                 <NoteComposer isPinned={isPinned} setIsPinned={setIsPinned} onCreate={onCreate}/>
-                {pinnedNotes.length===0?undefined:<PinnedNotes {...gridProps} handleArchiveNote={handleArchiveNote} notes={pinnedNotes} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} />}
-                <OtherNotes {...gridProps} handleArchiveNote={handleArchiveNote} otherNotes={otherNotes} notes={otherNotes} isPinnedNotesEmpty={pinnedNotes.length===0?true:false} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} />
+                {pinnedNotes.length===0?undefined:<PinnedNotes {...gridProps} handleArchiveNote={handleArchiveNote} notes={pinnedNotes} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} onCopy={onCopy}/>}
+                <OtherNotes {...gridProps} handleArchiveNote={handleArchiveNote} otherNotes={otherNotes} notes={otherNotes} isPinnedNotesEmpty={pinnedNotes.length===0?true:false} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} onCopy={onCopy}/>
 
                 {selectedNote&&<NoteEditor note={selectedNote} onSaveUpdate={onSaveUpdate} onCloseUpdate={onCloseUpdate} handleArchiveNote={handleArchiveNote} isProcessing={isProcessing} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} setIsProcessing={setIsProcessing} setFeedbackMessage={setFeedbackMessage}/>}
                 {feedbackMessage&&feedbackMessageContent}

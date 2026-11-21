@@ -9,7 +9,7 @@ import deleteforevericon from '../assets/deleteforevericon.svg';
 import { useEffect, useRef, useState } from 'react';
 import ColorPalette from './ColorPalette';
 import { getNoteColorHex } from '../constants/NoteColors';
-function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDeleteForever,onRestore,isProcessing,handleArchiveNote,setIsProcessing,handleUnarchiveNote,handlePinNote,handleUnpinNote,handleChangeNoteBackground})
+function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDeleteForever,onRestore,isProcessing,handleArchiveNote,setIsProcessing,handleUnarchiveNote,handlePinNote,handleUnpinNote,handleChangeNoteBackground,onCopy})
 {
     const [isMoreMenuActive,setIsMoreMenuActive]=useState(false);
     const notecardSectionBottomRef=useRef(null);
@@ -57,9 +57,28 @@ function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDelete
         }
     }
 
+    async function handleOnCopy()
+    {
+        try
+        {
+            const response=await onCopy(note);
+            setFeedbackMessage("Note Copied Successfully");
+            setIsMoreMenuActive(false);
+        }
+        catch(error)
+        {
+            console.log("Error:Copy Failed! "+(error.response?.data?.message || error.message));
+            setFeedbackMessage("Error:Copy Failed! "+(error.response?.data?.message || error.message || ""));
+        }
+    }
+
+
     const moreMenuContent=(
         <div className="NoteCard-moremenu-container">
-            <button onClick={(e)=>e.stopPropagation()}>Make a copy</button>
+            <button onClick={(e)=>{
+                e.stopPropagation();
+                handleOnCopy();
+            }} type="button" disabled={isProcessing}>Make a copy</button>
             <button onClick={(e)=>handleDeleteButtonOnClick(e)} disabled={isProcessing}>Delete</button>
         </div>
     );

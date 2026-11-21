@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createNote, updateNote, trashNote , changeNoteBackground } from '../services/noteService.js';
+import { createNote, updateNote, trashNote , changeNoteBackground, copyNote } from '../services/noteService.js';
 
 export function useNotes(fetchNotesFn)
 {
@@ -96,6 +96,25 @@ export function useNotes(fetchNotesFn)
         }
     }
 
+    async function onCopy(note) 
+    {
+        try 
+        {
+            setIsProcessing(true);
+            const response = await copyNote({title:note.title,pinned:false,content:note.content,backgroundColor:note.backgroundColor});
+            if (note.archived===false)
+            {
+                setNotes(n => [response,...n]);
+            }
+            return response;
+        } finally 
+        {
+            setIsProcessing(false);
+        }
+    }
+
+    
+
     useEffect(
         ()=>
         {
@@ -108,5 +127,5 @@ export function useNotes(fetchNotesFn)
 
     const gridProps={notes,onNoteClick,onDelete,setFeedbackMessage,isProcessing,setIsProcessing};
 
-    return {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote,handleChangeNoteBackground};
+    return {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote,handleChangeNoteBackground,onCopy};
 }
