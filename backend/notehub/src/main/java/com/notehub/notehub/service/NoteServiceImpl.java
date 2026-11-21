@@ -1,8 +1,10 @@
 package com.notehub.notehub.service;
 
+import com.notehub.notehub.dto.NoteBackgroundColorDto;
 import com.notehub.notehub.dto.NoteDto;
 import com.notehub.notehub.dto.NoteMapper;
 import com.notehub.notehub.entity.Note;
+import com.notehub.notehub.enums.BackgroundColor;
 import com.notehub.notehub.exception.InvalidNoteStateException;
 import com.notehub.notehub.repository.NoteRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +31,10 @@ public class NoteServiceImpl implements NoteService
     public Note createNote(NoteDto noteDto)
     {
             Note note=noteMapper.toNoteEntity(noteDto);
+            if (note.getBackgroundColor()==null)
+            {
+                note.setBackgroundColor(BackgroundColor.WHITE);
+            }
             Note savedNote=noteRepository.save(note);
             log.info("Note created successfully with ID: {}", savedNote.getId());
             return savedNote;
@@ -217,5 +223,15 @@ public class NoteServiceImpl implements NoteService
             log.info("Note with id {} is unpinned",id);
             return existingNote;
         }
+    }
+
+    @Override
+    @Transactional
+    public Note changeNoteBackground(Long id, NoteBackgroundColorDto bg)
+    {
+        Note existingNote=noteRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(()->new EntityNotFoundException("Note not found with ID: "+id));
+        existingNote.setBackgroundColor(bg.getBackgroundColor());
+        log.info("Note with id {} backgroundColor is set to {}",id,bg);
+        return existingNote;
     }
 }

@@ -1,5 +1,7 @@
 package com.notehub.notehub.dto;
 
+import com.notehub.notehub.enums.BackgroundColor;
+
 import java.time.LocalDateTime;
 
 public class NoteResponseDto
@@ -12,6 +14,7 @@ public class NoteResponseDto
     private String content;
     private boolean pinned;
     private LocalDateTime deletedAt;
+    private BackgroundColor backgroundColor;
 
     public Long getId() {
         return id;
@@ -78,5 +81,13 @@ public class NoteResponseDto
 
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public BackgroundColor getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(BackgroundColor backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }

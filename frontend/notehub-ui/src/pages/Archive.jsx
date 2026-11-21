@@ -6,7 +6,7 @@ import { useNotes } from '../hooks/useNotes';
 
 function Archive() 
 {
-    const {notes,selectedNote,feedbackMessage,setFeedbackMessage,onSaveUpdate,onCloseUpdate,isProcessing,gridProps,setIsProcessing,setNotes,setSelectedNote}=useNotes(getAllArchivedNotes);
+    const {notes,selectedNote,feedbackMessage,setFeedbackMessage,onSaveUpdate,onCloseUpdate,isProcessing,gridProps,setIsProcessing,setNotes,setSelectedNote,handleChangeNoteBackground}=useNotes(getAllArchivedNotes);
 
     async function handleUnarchiveNote(noteToArchive)
     {
@@ -65,8 +65,8 @@ function Archive()
 
     return (
         <div className="Archive-container">
-            {notes.length===0?noNotesinTrashContent:<NoteGrid {...gridProps} handleUnarchiveNote={handleUnarchiveNote} handlePinNote={handlePinNote}/>}
-            {selectedNote&&<NoteEditor note={selectedNote} onSaveUpdate={onSaveUpdate} onCloseUpdate={onCloseUpdate} isProcessing={isProcessing} handleUnarchiveNote={handleUnarchiveNote} handlePinNote={handlePinNote} />}
+            {notes.length===0?noNotesinTrashContent:<NoteGrid {...gridProps} handleUnarchiveNote={handleUnarchiveNote} handlePinNote={handlePinNote} isProcessing={isProcessing} handleChangeNoteBackground={handleChangeNoteBackground}/>}
+            {selectedNote&&<NoteEditor note={selectedNote} onSaveUpdate={onSaveUpdate} onCloseUpdate={onCloseUpdate} isProcessing={isProcessing} handleUnarchiveNote={handleUnarchiveNote} handlePinNote={handlePinNote} handleChangeNoteBackground={handleChangeNoteBackground} setIsProcessing={setIsProcessing}/>}
             {feedbackMessage&&feedbackMessageContent}
         </div>
     );

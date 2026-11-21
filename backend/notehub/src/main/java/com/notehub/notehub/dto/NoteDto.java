@@ -1,5 +1,6 @@
 package com.notehub.notehub.dto;
 
+import com.notehub.notehub.enums.BackgroundColor;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,10 @@ public class NoteDto
     private String content;
 
     private boolean pinned;
+
+    @NotNull
+    private BackgroundColor backgroundColor;
+
 
     public String getTitle() {
         return title;
@@ -38,5 +43,13 @@ public class NoteDto
 
     public void setPinned(boolean pinned) {
         this.pinned = pinned;
+    }
+
+    public BackgroundColor getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(BackgroundColor backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }

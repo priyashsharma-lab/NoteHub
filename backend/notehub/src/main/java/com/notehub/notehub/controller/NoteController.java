@@ -1,5 +1,6 @@
 package com.notehub.notehub.controller;
 
+import com.notehub.notehub.dto.NoteBackgroundColorDto;
 import com.notehub.notehub.dto.NoteDto;
 import com.notehub.notehub.dto.NoteMapper;
 import com.notehub.notehub.dto.NoteResponseDto;
@@ -119,6 +120,13 @@ public class NoteController
     public ResponseEntity<NoteResponseDto> unpinNote(@Positive @PathVariable("id") Long id)
     {
         Note note=noteService.unpinNote(id);
+        return ResponseEntity.ok(noteMapper.toNoteResponseDto(note));
+    }
+
+    @PatchMapping("/{id}/background")
+    public ResponseEntity<NoteResponseDto> changeNoteBackground(@Positive @PathVariable("id") Long id, @Valid @RequestBody NoteBackgroundColorDto noteBackgroundColorDto)
+    {
+        Note note=noteService.changeNoteBackground(id,noteBackgroundColorDto);
         return ResponseEntity.ok(noteMapper.toNoteResponseDto(note));
     }
 }

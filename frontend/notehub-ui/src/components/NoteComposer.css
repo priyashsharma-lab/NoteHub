@@ -58,6 +58,8 @@
     width: 32px; 
     height: 32px; 
     padding: 6px;
+    background-color: transparent;
+    align-items: center;
 }
 .NoteComposer-section-top button img
 {
@@ -105,16 +107,19 @@
     align-items: center;
     gap: 10px;
     justify-content: center;
+    position: relative;
 }
 .NoteComposer-section-bottom button
 {
     width: 30px;
     height: 30px;
     background-color: white;
+    background-color: transparent;
     border: none;
     border-radius: 50%;
     margin-left: 10px;
     font-size: 1.04rem;
+    cursor: pointer;
 }
 .NoteComposer-close-create-button
 {

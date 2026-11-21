@@ -1,6 +1,9 @@
 package com.notehub.notehub.entity;
 
+import com.notehub.notehub.enums.BackgroundColor;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +30,10 @@ public class Note
     private LocalDateTime updatedAt;
 
     private LocalDateTime deletedAt=null;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BackgroundColor backgroundColor=BackgroundColor.WHITE;
 
     public Note(){}
 
@@ -101,5 +108,13 @@ public class Note
 
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public BackgroundColor getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(BackgroundColor backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }

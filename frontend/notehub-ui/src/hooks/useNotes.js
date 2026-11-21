@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createNote, updateNote, trashNote } from '../services/noteService.js';
+import { createNote, updateNote, trashNote , changeNoteBackground } from '../services/noteService.js';
 
 export function useNotes(fetchNotesFn)
 {
@@ -18,7 +18,7 @@ export function useNotes(fetchNotesFn)
         try
         {
             setIsProcessing(true);
-            const request={title:note.title,content:note.content};
+            const request={title:note.title,content:note.content,backgroundColor:note.backgroundColor};
             const response=await updateNote(note.id,request);
             setNotes(n=>[response,...n.filter((note)=>note.id!==response.id)]);
             return response;
@@ -39,7 +39,7 @@ export function useNotes(fetchNotesFn)
         try
         {
             setIsProcessing(true);
-            const noteData={title:data.title,content:data.content,pinned:data.pinned};
+            const noteData={title:data.title,content:data.content,pinned:data.pinned,backgroundColor:(data.backgroundColor===null?"WHITE":data.backgroundColor)};
             const response=await createNote(noteData);
             setNotes(n=>[response,...n]);
             return response;
@@ -81,6 +81,21 @@ export function useNotes(fetchNotesFn)
         }
     }
 
+    async function handleChangeNoteBackground(id, bgColor) 
+    {
+        try 
+        {
+            setIsProcessing(true);
+            const response = await changeNoteBackground(id, bgColor);
+            setNotes(n => n.map(nt => (nt.id === response.id ? response : nt)));
+            setSelectedNote(s => (s && s.id === response.id ? response : s));
+            return response;
+        } finally 
+        {
+            setIsProcessing(false);
+        }
+    }
+
     useEffect(
         ()=>
         {
@@ -93,5 +108,5 @@ export function useNotes(fetchNotesFn)
 
     const gridProps={notes,onNoteClick,onDelete,setFeedbackMessage,isProcessing,setIsProcessing};
 
-    return {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote};
+    return {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote,handleChangeNoteBackground};
 }

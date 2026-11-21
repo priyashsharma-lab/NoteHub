@@ -1,7 +1,9 @@
 package com.notehub.notehub.service;
 
+import com.notehub.notehub.dto.NoteBackgroundColorDto;
 import com.notehub.notehub.dto.NoteDto;
 import com.notehub.notehub.entity.Note;
+import com.notehub.notehub.enums.BackgroundColor;
 
 import java.util.List;
 
@@ -21,5 +23,6 @@ public interface NoteService
     public List<Note> getAllArchiveNotes();
     public Note pinNote(Long id);
     public Note unpinNote(Long id);
+    public Note changeNoteBackground(Long id, NoteBackgroundColorDto bg);
 
 }

@@ -17,6 +17,7 @@ public class NoteMapper
         noteResponseDto.setCreatedAt(note.getCreatedAt());
         noteResponseDto.setUpdatedAt(note.getUpdatedAt());
         noteResponseDto.setDeletedAt(note.getDeletedAt());
+        noteResponseDto.setBackgroundColor(note.getBackgroundColor());
         return noteResponseDto;
     }
 
@@ -26,6 +27,7 @@ public class NoteMapper
         note.setTitle(noteDto.getTitle());
         note.setContent(noteDto.getContent());
         note.setPinned(noteDto.isPinned());
+        note.setBackgroundColor(noteDto.getBackgroundColor());
         return note;
     }
 

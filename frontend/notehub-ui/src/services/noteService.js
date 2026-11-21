@@ -80,3 +80,9 @@ export async function unpinNote(id)
     const response=await axiosInstance.patch(`/notes/${id}/unpin`);
     return response.data;
 }
+
+export async function changeNoteBackground(id,bgColor)
+{
+    const response=await axiosInstance.patch(`/notes/${id}/background`,{backgroundColor:bgColor});
+    return response.data;
+}

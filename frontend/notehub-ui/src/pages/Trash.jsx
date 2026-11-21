@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import NoteGrid from '../components/NoteGrid';
 import './Trash.css';
 import {getDeletedNotes,deleteNoteForever,restoreNote,emptyTrash} from '../services/noteService.js';
-import restoreicon from '../assets/restoreicon.jpg';
-import deleteforevericon from '../assets/deleteforevericon.png';
+import restoreicon from '../assets/restoreicon.svg';
+import deleteforevericon from '../assets/deleteforevericon.svg';
 function Trash()
 {
     const [notes,setNotes]=useState([]);

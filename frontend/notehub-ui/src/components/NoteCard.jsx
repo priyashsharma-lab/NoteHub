@@ -1,32 +1,36 @@
 import './NoteCard.css';
 import pinlogo from '../assets/pin.svg';
 import pinlogofill from '../assets/pin-fill.svg';
-import imageicon from '../assets/imageicon.png';
-import colorpallet from '../assets/colorpallet.png';
+import imageicon from '../assets/imageicon.svg';
+import colorpallet from '../assets/colorpallet.svg';
 import archiveicon from '../assets/archiveicon.svg';
-import restoreicon from '../assets/restoreicon.jpg';
-import deleteforevericon from '../assets/deleteforevericon.png';
+import restoreicon from '../assets/restoreicon.svg';
+import deleteforevericon from '../assets/deleteforevericon.svg';
 import { useEffect, useRef, useState } from 'react';
-function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDeleteForever,onRestore,isProcessing,handleArchiveNote,setIsProcessing,handleUnarchiveNote,handlePinNote,handleUnpinNote})
+import ColorPalette from './ColorPalette';
+import { getNoteColorHex } from '../constants/NoteColors';
+function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDeleteForever,onRestore,isProcessing,handleArchiveNote,setIsProcessing,handleUnarchiveNote,handlePinNote,handleUnpinNote,handleChangeNoteBackground})
 {
     const [isMoreMenuActive,setIsMoreMenuActive]=useState(false);
     const notecardSectionBottomRef=useRef(null);
+    const [isColorPaletteActive,setIsColorPaletteActive]=useState(false);
     useEffect(
         ()=>
         {
-            if (!isMoreMenuActive) return;
 
             function handleOutsideClick(event)
             {
                 if (notecardSectionBottomRef.current&&!notecardSectionBottomRef.current.contains(event.target))
                 {
-                    setIsMoreMenuActive(false);
+                    isMoreMenuActive?setIsMoreMenuActive(false):undefined;
+                    isColorPaletteActive?setIsColorPaletteActive(false):undefined;
                 }
             }
 
             window.addEventListener("mousedown",handleOutsideClick,true);
             return ()=>{window.removeEventListener("mousedown",handleOutsideClick,true)};
-        },[isMoreMenuActive]);
+        },[isMoreMenuActive,isColorPaletteActive]);
+
     function handleMoreButtonOnClick(e)
     {
         e.stopPropagation();
@@ -59,6 +63,7 @@ function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDelete
             <button onClick={(e)=>handleDeleteButtonOnClick(e)} disabled={isProcessing}>Delete</button>
         </div>
     );
+
     const trashPageBottomSectionContent=(
         <>
         <button type="button" onClick={(e) =>
@@ -77,18 +82,22 @@ function NoteCard({note,onNoteClick,onDelete,setFeedbackMessage,isTrash,onDelete
     );
     const homePageBottomSectionContent=(
             <>
-            <button type="button" onClick={(e) => e.stopPropagation()}><img src={colorpallet} alt="Colorpallet Icon" /></button>
+            <button type="button" onClick={(e) => {
+                e.stopPropagation();
+                isColorPaletteActive?setIsColorPaletteActive(false):setIsColorPaletteActive(true);
+            }} disabled={isProcessing}><img src={colorpallet} alt="Colorpallet Icon" /></button>
             <button type="button" onClick={(e) => e.stopPropagation()}><img src={imageicon} alt="Image Icon" /></button>
             <button type="button" onClick={async (e)=>{
                 e.stopPropagation();
                 !note.archived?await handleArchiveNote(note):await handleUnarchiveNote(note);
             }} disabled={isProcessing}><img src={archiveicon} alt="archiveicon" /></button>
             <button type="button" onClick={(e) => handleMoreButtonOnClick(e)}><span>&#8942;</span></button>                {isMoreMenuActive?moreMenuContent:null}
+            {isColorPaletteActive?<ColorPalette noteBackgroundColor={note.backgroundColor} isProcessing={isProcessing} note={note} setFeedbackMessage={setFeedbackMessage} setIsProcessing={setIsProcessing} handleChangeNoteBackground={handleChangeNoteBackground}/>:null}
             {/* Add more later */}
             </>
     );
     return(
-        <div className="NoteCard-container" onClick={()=>onNoteClick(note)}>
+        <div className="NoteCard-container" onClick={()=>onNoteClick(note)} style={{ backgroundColor: getNoteColorHex(note.backgroundColor) }}>
             <div className="NoteCard-section-top">
                 <span>{note.title}</span>
                 {

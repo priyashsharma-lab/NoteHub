@@ -1,15 +1,19 @@
 import './NoteEditor.css';
 import pinlogo from '../assets/pin.svg'
 import pinlogofill from '../assets/pin-fill.svg'
-import imageicon from '../assets/imageicon.png'
-import colorpallet from '../assets/colorpallet.png'
+import imageicon from '../assets/imageicon.svg'
+import colorpallet from '../assets/colorpallet.svg'
 import archiveicon from '../assets/archiveicon.svg'
 import { useState } from 'react';
-function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcessing,handleUnarchiveNote,handlePinNote,handleUnpinNote})
+import ColorPalette from './ColorPalette.jsx';
+import { getNoteColorHex } from '../constants/NoteColors';
+function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcessing,handleUnarchiveNote,handlePinNote,handleUnpinNote,setIsProcessing,setFeedbackMessage,handleChangeNoteBackground})
 {
-    const [selectedNote,setSelectedNote]=useState({...note,content:(note.content===null?"":note.content)});
+    const [selectedNote,setSelectedNote]=useState({...note,content:(note.content===null?"":note.content),backgroundColor:note.backgroundColor});
     const [error,setError]=useState("");
     const [isSubmitting,setIsSubmitting]=useState(false);
+    const [isColorPaletteActive,setIsColorPaletteActive]=useState(false);
+    const bgHex = getNoteColorHex(note.backgroundColor);
     async function handleSaveUpdate()
     {
         if (selectedNote.title.trim().length===0)
@@ -32,7 +36,8 @@ function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcess
             setIsSubmitting(true);
             const cleanedNote = {
             ...selectedNote,
-            title:selectedNote.title.trim()
+            title:selectedNote.title.trim(),
+            backgroundColor:note.backgroundColor
         };
             await onSaveUpdate(cleanedNote);
             setError("");
@@ -59,9 +64,9 @@ function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcess
     }
     return(
         <div className="NoteEditor-backdrop-container" onClick={isSubmitting?undefined:onCloseUpdate}>            
-            <div className="NoteEditor-container" onClick={(e)=>e.stopPropagation()}>
+            <div className="NoteEditor-container" onClick={(e)=>e.stopPropagation()} style={{ backgroundColor: bgHex }}>
                 <div className="NoteEditor-section-top">
-                    <input type="text" value={selectedNote.title} onChange={(e)=>{handleTitleChange(e)}} placeholder="Title"/>
+                    <input type="text" value={selectedNote.title} onChange={(e)=>{handleTitleChange(e)}} placeholder="Title" style={{ backgroundColor: bgHex }}/>
                     <button
                     className={`NoteEditor-pin-button ${note.pinned ? 'is-pinned' : ''}`}
                     type="button"
@@ -74,11 +79,14 @@ function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcess
                 </div>
                 {error && <p className="NoteComposer-error">{error}</p>}
                 <div className="NoteEditor-section-middle">
-                    <textarea value={selectedNote.content} onChange={(e)=>{handleContentChange(e)}} placeholder="Take a note..."></textarea>
+                    <textarea value={selectedNote.content} onChange={(e)=>{handleContentChange(e)}} placeholder="Take a note..." style={{ backgroundColor: bgHex }}></textarea>
                 </div>
                 <span className="NoteEditor-updatedat-container"> Edited {selectedNote.updatedAt?(new Date(selectedNote.updatedAt).toLocaleString()):""}</span>
                 <div className="NoteEditor-section-bottom">
-                    <button type="button" onClick={(e) => e.stopPropagation()}><img src={colorpallet} alt="Colorpallet Icon" /></button>
+                    <button type="button" onClick={(e) => {
+                    e.stopPropagation();
+                    isColorPaletteActive?setIsColorPaletteActive(false):setIsColorPaletteActive(true);
+                }} disabled={isProcessing}><img src={colorpallet} alt="Colorpallet Icon" /></button>
                     <button type="button" onClick={(e) => e.stopPropagation()}><img src={imageicon} alt="Image Icon" /></button>
                     <button type="button" onClick={async (e)=>{
                         e.stopPropagation();
@@ -86,6 +94,8 @@ function NoteEditor({note,onSaveUpdate,onCloseUpdate,handleArchiveNote,isProcess
                     }} disabled={isProcessing}><img src={archiveicon} alt="archiveicon" /></button>
                     <button className="NoteEditor-close-create-button" type="button" disabled={isSubmitting||isProcessing} onClick={onCloseUpdate}>Close</button>
                     <button className="NoteEditor-close-create-button" type="button" onClick={handleSaveUpdate} disabled={isSubmitting||isProcessing}>Update</button>
+                    
+                    {isColorPaletteActive?<ColorPalette noteBackgroundColor={note.backgroundColor} isProcessing={isProcessing} note={note} setFeedbackMessage={setFeedbackMessage} setIsProcessing={setIsProcessing} handleChangeNoteBackground={handleChangeNoteBackground}/>:null}
                     {/* Add more later */}
                 </div>
             </div>
