@@ -15,6 +15,7 @@ public interface NoteService
     public Note updateNote(Long id,NoteDto noteDto);
     public void trashNote(Long id);
     public List<Note> getDeletedNotes();
+    public List<Note> getNonDeletedNotes();
     public Note restoreNote(Long id);
     public void deleteNoteForever(Long id);
     public void deleteAllTrashNotes();

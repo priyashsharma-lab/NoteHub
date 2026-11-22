@@ -35,6 +35,12 @@ export async function getDeletedNotes()
     return response.data;
 }
 
+export async function getNonDeletedNotes()
+{
+    const response=await axiosInstance.get("/notes/nontrash");
+    return response.data;
+}
+
 export async function restoreNote(id)
 {
     const response=await axiosInstance.post(`/notes/${id}/restore`);

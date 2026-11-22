@@ -86,6 +86,13 @@ public class NoteServiceImpl implements NoteService
     }
 
     @Override
+    public List<Note> getNonDeletedNotes()
+    {
+        log.debug("Fetching non-deleted Notes");
+        return noteRepository.findByDeletedAtIsNull();
+    }
+
+    @Override
     @Transactional
     public Note restoreNote(Long id)
     {

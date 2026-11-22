@@ -1,7 +1,9 @@
 import './Navbar.css';
 import noteHubLogo from '../assets/NoteHub logo.png';
+import { useNavigate } from 'react-router-dom';
 
-function Navbar({ onMenuClick }) {
+function Navbar({ onMenuClick ,searchInput,setSearchInput,setRefreshTrigger}) {
+    const navigate=useNavigate();
     return (
         <div id="navbar-container">
             <div id="hamburger-icon">
@@ -21,12 +23,20 @@ function Navbar({ onMenuClick }) {
                 <img src={noteHubLogo} alt="NoteHub logo" width={125} height={40} />
             </div>
 
-            <div id="nav-search-bar">
-                <button id="nav-search-button" type="button" aria-label="Search">
+            <div id="nav-search-bar" onClick={()=>navigate("/search")}>
+                <button id="nav-search-button" type="button" aria-label="Search" onClick={(e)=>{
+                    e.stopPropagation();
+                    navigate("/search");
+                    setRefreshTrigger(r=>r+1);
+                }}>
                     <span>&#128269;</span>
                 </button>
-                <input type="text" placeholder="Search" aria-label="Search notes" />
-                <button id="nav-clear-button" type="button" aria-label="Clear search">
+                <input type="text" placeholder="Search" aria-label="Search notes" onChange={(e)=>setSearchInput(e.target.value)} value={searchInput}/>
+                <button id="nav-clear-button" type="button" aria-label="Clear search" onClick={(e)=>{
+                    e.stopPropagation();
+                    setSearchInput("");
+                    navigate("/notes");
+                    }}>
                     <span>&#10005;</span>
                 </button>
             </div>

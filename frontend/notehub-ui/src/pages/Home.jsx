@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import NoteComposer from '../components/NoteComposer.jsx';
 import { getAllNotes, archiveNote ,pinNote,unpinNote} from '../services/noteService.js';
 import './Home.css';

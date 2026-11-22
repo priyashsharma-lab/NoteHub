@@ -129,4 +129,9 @@ public class NoteController
         Note note=noteService.changeNoteBackground(id,noteBackgroundColorDto);
         return ResponseEntity.ok(noteMapper.toNoteResponseDto(note));
     }
+    @GetMapping("/nontrash")
+    public List<NoteResponseDto> getNonDeletedNotes()
+    {
+        return noteService.getNonDeletedNotes().stream().map(n->noteMapper.toNoteResponseDto(n)).toList();
+    }
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createNote, updateNote, trashNote , changeNoteBackground, copyNote } from '../services/noteService.js';
 
-export function useNotes(fetchNotesFn)
+export function useNotes(fetchNotesFn,refreshTrigger,searchPageActive=false)
 {
     const [notes,setNotes]=useState([]);
     const [selectedNote,setSelectedNote]=useState(null);
@@ -64,7 +64,7 @@ export function useNotes(fetchNotesFn)
             }
         }
         loadNotes();
-    },[fetchNotesFn]);
+    },[fetchNotesFn,refreshTrigger]);
 
     async function onDelete(note)
     {
@@ -102,7 +102,7 @@ export function useNotes(fetchNotesFn)
         {
             setIsProcessing(true);
             const response = await copyNote({title:note.title,pinned:false,content:note.content,backgroundColor:note.backgroundColor});
-            if (note.archived===false)
+            if (note.archived===false || searchPageActive===true)
             {
                 setNotes(n => [response,...n]);
             }
@@ -113,7 +113,6 @@ export function useNotes(fetchNotesFn)
         }
     }
 
-    
 
     useEffect(
         ()=>

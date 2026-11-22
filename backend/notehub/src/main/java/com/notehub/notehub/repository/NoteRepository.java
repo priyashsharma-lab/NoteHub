@@ -14,6 +14,7 @@ public interface NoteRepository extends JpaRepository<Note,Long>
 {
     public List<Note> findByDeletedAtIsNullAndArchivedIsFalse();
     public List<Note> findByDeletedAtIsNotNull();
+    public List<Note> findByDeletedAtIsNull();
     public Optional<Note> findByIdAndDeletedAtIsNull(Long id);
     public void deleteByDeletedAtIsNotNull();
     @Modifying
