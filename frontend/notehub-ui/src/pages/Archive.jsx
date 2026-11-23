@@ -4,9 +4,9 @@ import NoteEditor from '../components/NoteEditor';
 import { getAllArchivedNotes,unarchiveNote,pinNote} from '../services/noteService';
 import { useNotes } from '../hooks/useNotes';
 
-function Archive() 
+function Archive({refreshTrigger, startRefreshing, endRefreshing,isRefreshing}) 
 {
-    const {notes,selectedNote,feedbackMessage,setFeedbackMessage,onSaveUpdate,onCloseUpdate,isProcessing,gridProps,setIsProcessing,setNotes,setSelectedNote,handleChangeNoteBackground,onCopy}=useNotes(getAllArchivedNotes);
+    const {notes,selectedNote,feedbackMessage,setFeedbackMessage,onSaveUpdate,onCloseUpdate,isProcessing,gridProps,setIsProcessing,setNotes,setSelectedNote,handleChangeNoteBackground,onCopy}=useNotes(getAllArchivedNotes, refreshTrigger, startRefreshing, endRefreshing);
 
     async function handleUnarchiveNote(noteToArchive)
     {
@@ -63,12 +63,20 @@ function Archive()
         </div>
     );
 
+    const refreshingContent=(
+        <div className="refreshingcontent">
+            <span>&#8635;</span>
+        </div>
+    );
+
     return (
-        <div className="Archive-container">
+        <>
+        {isRefreshing?refreshingContent:(<div className="Archive-container">
             {notes.length===0?noNotesinTrashContent:<NoteGrid {...gridProps} handleUnarchiveNote={handleUnarchiveNote} handlePinNote={handlePinNote} isProcessing={isProcessing} handleChangeNoteBackground={handleChangeNoteBackground} onCopy={onCopy}/>}
             {selectedNote&&<NoteEditor note={selectedNote} onSaveUpdate={onSaveUpdate} onCloseUpdate={onCloseUpdate} isProcessing={isProcessing} handleUnarchiveNote={handleUnarchiveNote} handlePinNote={handlePinNote} handleChangeNoteBackground={handleChangeNoteBackground} setIsProcessing={setIsProcessing}/>}
             {feedbackMessage&&feedbackMessageContent}
-        </div>
+        </div>)}
+        </>
     );
 }
 

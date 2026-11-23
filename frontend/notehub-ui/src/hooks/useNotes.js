@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createNote, updateNote, trashNote , changeNoteBackground, copyNote } from '../services/noteService.js';
 
-export function useNotes(fetchNotesFn,refreshTrigger,searchPageActive=false)
+export function useNotes(fetchNotesFn,refreshTrigger,startRefreshing,endRefreshing,searchPageActive=false)
 {
     const [notes,setNotes]=useState([]);
     const [selectedNote,setSelectedNote]=useState(null);
@@ -52,19 +52,46 @@ export function useNotes(fetchNotesFn,refreshTrigger,searchPageActive=false)
 
     useEffect(()=>
     {
+        if (!fetchNotesFn) return;
+        let isCancelled = false;
+        let hasFinished = false;
+
+        const finishRefresh = () => {
+            if (!hasFinished) {
+                hasFinished = true;
+                endRefreshing?.();
+            }
+        };
+
         const loadNotes=async ()=>
         {
             try
             {
-                setNotes(await fetchNotesFn());
+                startRefreshing?.();
+                const data = await fetchNotesFn();
+                if (!isCancelled)
+                {
+                    setNotes(data);
+                }
             }
             catch (error)
             {
-                console.log("Fetching Notes Failed"+(error.response?.data?.message||error.message));
+                if (!isCancelled)
+                {
+                    setFeedbackMessage("Error:Fetching Notes Failed"+(error.response?.data?.message||error.message));
+                }
+            }
+            finally
+            {
+                finishRefresh();
             }
         }
         loadNotes();
-    },[fetchNotesFn,refreshTrigger]);
+        return()=>{
+            isCancelled=true;
+            finishRefresh();
+        };
+    },[fetchNotesFn,refreshTrigger,startRefreshing,endRefreshing]);
 
     async function onDelete(note)
     {

@@ -4,10 +4,10 @@ import { getNonDeletedNotes } from '../services/noteService';
 import NoteGrid from '../components/NoteGrid';
 import NoteEditor from '../components/NoteEditor.jsx';
 import { useMemo } from 'react';
-import { archiveNote ,pinNote,unpinNote,unarchiveNote,copyNote} from '../services/noteService.js';
-function Search({searchInput,refreshTrigger})
+import { archiveNote ,pinNote,unpinNote,unarchiveNote} from '../services/noteService.js';
+function Search({searchInput, refreshTrigger, startRefreshing, endRefreshing,isRefreshing})
 {
-    const {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote,handleChangeNoteBackground,onCopy}=useNotes(getNonDeletedNotes,refreshTrigger,true);   
+    const {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote,handleChangeNoteBackground,onCopy}=useNotes(getNonDeletedNotes, refreshTrigger, startRefreshing, endRefreshing, true);   
 
     const { normalNotes, archivedNotes } = useMemo(() =>{
         const query = searchInput.trim().toLowerCase();
@@ -137,8 +137,16 @@ function Search({searchInput,refreshTrigger})
             <p>{(searchInput.trim().length===0)?"Results will appear here.":(archivedNotes.length===0 && normalNotes.length===0?"No results found.":undefined)}</p>
         </div>
     );
+
+    const refreshingContent=(
+        <div className="refreshingcontent">
+            <span>&#8635;</span>
+        </div>
+    );
+
     return(
-        <div className="Search-container">
+        <>
+        {isRefreshing?refreshingContent:(<div className="Search-container">
             <div className="Search-normalnotes-container">
                 <NoteGrid {...gridProps} notes={normalNotes} handleArchiveNote={handleArchiveNote} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} onCopy={onCopy} handleUnarchiveNote={handleUnarchiveNote}/>
             </div>
@@ -149,7 +157,8 @@ function Search({searchInput,refreshTrigger})
                 {selectedNote&&<NoteEditor note={selectedNote} onSaveUpdate={onSaveUpdate} onCloseUpdate={onCloseUpdate} handleArchiveNote={handleArchiveNote} isProcessing={isProcessing} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} setIsProcessing={setIsProcessing} setFeedbackMessage={setFeedbackMessage} handleUnarchiveNote={handleUnarchiveNote}/>}
                 {feedbackMessage&&feedbackMessageContent}
                 {onSearchFieldEmptyOrNoNotesContent}
-        </div>
+        </div>)}
+        </>
     );
 }
 

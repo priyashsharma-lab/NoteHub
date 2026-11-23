@@ -7,10 +7,10 @@ import { useNotes } from '../hooks/useNotes.js';
 import PinnedNotes from '../components/PinnedNotes.jsx';
 import OtherNotes from '../components/OtherNotes.jsx';
 
-function Home()
+function Home({refreshTrigger, startRefreshing, endRefreshing, isRefreshing})
 {
     const [isPinned,setIsPinned]=useState(false);
-    const {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote,handleChangeNoteBackground,onCopy}=useNotes(getAllNotes);
+    const {notes,setNotes,selectedNote,feedbackMessage,setFeedbackMessage,onCreate,onSaveUpdate,onCloseUpdate,isProcessing,setIsProcessing,gridProps,setSelectedNote,handleChangeNoteBackground,onCopy}=useNotes(getAllNotes, refreshTrigger, startRefreshing, endRefreshing);
 
     const { pinnedNotes, otherNotes } = useMemo(() => (
         {
@@ -96,16 +96,23 @@ function Home()
         </div>
     );
 
+
+    const refreshingContent=(
+        <div className="refreshingcontent">
+            <span>&#8635;</span>
+        </div>
+    );
+
     return(
         <>
-            <main className="content-area">
+            {isRefreshing?refreshingContent:(<main className="content-area">
                 <NoteComposer isPinned={isPinned} setIsPinned={setIsPinned} onCreate={onCreate}/>
                 {pinnedNotes.length===0?undefined:<PinnedNotes {...gridProps} handleArchiveNote={handleArchiveNote} notes={pinnedNotes} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} onCopy={onCopy}/>}
                 <OtherNotes {...gridProps} handleArchiveNote={handleArchiveNote} otherNotes={otherNotes} notes={otherNotes} isPinnedNotesEmpty={pinnedNotes.length===0?true:false} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} onCopy={onCopy}/>
 
                 {selectedNote&&<NoteEditor note={selectedNote} onSaveUpdate={onSaveUpdate} onCloseUpdate={onCloseUpdate} handleArchiveNote={handleArchiveNote} isProcessing={isProcessing} handlePinNote={handlePinNote} handleUnpinNote={handleUnpinNote} handleChangeNoteBackground={handleChangeNoteBackground} setIsProcessing={setIsProcessing} setFeedbackMessage={setFeedbackMessage}/>}
                 {feedbackMessage&&feedbackMessageContent}
-            </main>
+            </main>)}
         </>
     )
 }

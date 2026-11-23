@@ -4,7 +4,7 @@ import './Trash.css';
 import {getDeletedNotes,deleteNoteForever,restoreNote,emptyTrash} from '../services/noteService.js';
 import restoreicon from '../assets/restoreicon.svg';
 import deleteforevericon from '../assets/deleteforevericon.svg';
-function Trash()
+function Trash({refreshTrigger, startRefreshing, endRefreshing,isRefreshing})
 {
     const [notes,setNotes]=useState([]);
     const [feedbackMessage,setFeedbackMessage]=useState("");
@@ -13,22 +13,47 @@ function Trash()
     const [isProcessing,setIsProcessing]=useState(false);
     const [isEmptyTrash,setIsEmptyTrash]=useState(false);
     useEffect(
-        ()=>
+    ()=>
+    {
+        let isCancelled = false;
+        let hasFinished = false;
+
+        const finishRefresh = () => {
+            if (!hasFinished) {
+                hasFinished = true;
+                endRefreshing?.();
+            }
+        };
+
+        async function fetchDeletedNotes()
         {
-            async function fetchDeletedNotes()
+            try
             {
-                try
+                startRefreshing?.();
+                const response= await getDeletedNotes();
+                if (!isCancelled)
                 {
-                    const response= await getDeletedNotes();
                     setNotes(response);
                 }
-                catch (error)
+            }
+            catch (error)
+            {
+                if (!isCancelled)
                 {
                     setFeedbackMessage("Error:Cannot fetch deleted notes!"+(error.response?.data?.message||error.message));
                 }
             }
-            fetchDeletedNotes();
-        },[]);
+            finally
+            {
+                finishRefresh();
+            }
+        }
+        fetchDeletedNotes();
+        return()=>{
+            isCancelled=true;
+            finishRefresh();
+        };
+    },[refreshTrigger,startRefreshing,endRefreshing]);
 
     function onNoteClick(note)
     {
@@ -184,8 +209,16 @@ function Trash()
             <button onClick={()=>setFeedbackMessage("")}>&#10005;</button>
         </div>
     );
+
+    const refreshingContent=(
+        <div className="refreshingcontent">
+            <span>&#8635;</span>
+        </div>
+    );
+
     return(
-        <div className="Trash-container">
+        <>
+        {isRefreshing?refreshingContent:(<div className="Trash-container">
             <div className="Trash-cleartrash-container">
                 <span>Notes in Trash are deleted after 7 days.</span>
                 <button className="Trash-emptytrash-button" onClick={(e)=>{
@@ -203,7 +236,8 @@ function Trash()
             {noteToDelete&&foreverDeleteDialogContent}
             {isEmptyTrash&&emptyTrashDialogContent}
             {feedbackMessage&&feedBackMessageDialogContent}
-        </div>
+        </div>)}
+        </>
     );
 }   
 

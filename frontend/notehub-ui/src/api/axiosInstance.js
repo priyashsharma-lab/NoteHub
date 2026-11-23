@@ -5,7 +5,8 @@ const axiosInstance = axios.create({
     headers: {
         "Content-Type": "application/json"
     },
-    timeout: 10000
+    timeout: 10000,
+    timeoutErrorMessage: "Request timed out after 5 seconds. Server may be offline."
 });
 axiosInstance.interceptors.response.use
 (

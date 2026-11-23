@@ -2,7 +2,7 @@ import './Navbar.css';
 import noteHubLogo from '../assets/NoteHub logo.png';
 import { useNavigate } from 'react-router-dom';
 
-function Navbar({ onMenuClick ,searchInput,setSearchInput,setRefreshTrigger}) {
+function Navbar({ onMenuClick ,searchInput,setSearchInput,setRefreshTrigger,isRefreshing}) {
     const navigate=useNavigate();
     return (
         <div id="navbar-container">
@@ -27,7 +27,6 @@ function Navbar({ onMenuClick ,searchInput,setSearchInput,setRefreshTrigger}) {
                 <button id="nav-search-button" type="button" aria-label="Search" onClick={(e)=>{
                     e.stopPropagation();
                     navigate("/search");
-                    setRefreshTrigger(r=>r+1);
                 }}>
                     <span>&#128269;</span>
                 </button>
@@ -42,7 +41,7 @@ function Navbar({ onMenuClick ,searchInput,setSearchInput,setRefreshTrigger}) {
             </div>
 
             <div id="nav-utility-icons">
-                <button id="nav-refresh-icon" type="button" aria-label="Refresh notes">
+                <button id="nav-refresh-icon" type="button" aria-label="Refresh notes" onClick={()=>setRefreshTrigger(r=>r+1)} disabled={isRefreshing}>
                     &#8635;
                 </button>
                 <button id="nav-settings-icon" type="button" aria-label="Settings">
